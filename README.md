@@ -1,2 +1,4 @@
-# localias
+# Localias
 Local alias for zsh
+
+
