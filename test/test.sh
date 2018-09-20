@@ -9,8 +9,17 @@ shopt -s expand_aliases
 cd toto_ls
 localias_load
 echo -n "It should load aliases="
-
 if [ "$(command -v toto)" ]; then
+  echo -e $ok_s
+else
+  echo -e $ko_s
+fi
+
+localias_clear
+cd ../severals
+localias_load
+echo -n "It should load several aliases="
+if [ "$(command -v a b c)" ]; then
   echo -e $ok_s
 else
   echo -e $ko_s

@@ -22,6 +22,7 @@ localias_load()
   tmp_file="/tmp/localias.tmp"
 
   if [ -f $localias ]; then
+    aliases=()
     while IFS='' read -r line || [ -n "$line" ]; do
         alias_name=$(echo "$line" | cut -d = -f 1)
         alias_command=$(echo "$line" | cut -d = -f 2-99)
@@ -29,11 +30,12 @@ localias_load()
            if [ $LOCALIAS_ALIAS_OVERIDE -eq 0 -a "$(command -v $alias_name)" ]; then
             (>&2 echo "$alias_name: is already an alias")
            else
-            alias $alias_name="$alias_command"
-            echo "$alias_name=$alias_command" >> "$tmp_file"
+            aliases+=("$alias_name='$alias_command'")
            fi
         fi
     done < "$localias"
+    alias "${aliases[@]}"
+    echo "${aliases[@]}" | tr " " "\n" >> $tmp_file
   fi
   if [ $LOCALIAS_RECURSIVE -eq 1 ]; then
     newdir=$(echo $cdir | rev | cut -d / -f 2-99 | rev)
