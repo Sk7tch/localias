@@ -24,7 +24,50 @@ else
   echo -e $ko_s
 fi
 
+
+cd ../recurs_1/recurs_2/recurs_3/
+localias_load
+nline=$(command -v rc1 rc2 rc3 | wc -l)
+echo -n "It should recursivly load aliases(1)="
+if [ "$nline" == "3" ]; then
+  echo -e $ok_s
+else
+  echo -e $ko_s
+fi
+cd ../../..
+
+localias_clear
+cd ./recurs_1/recurs_2/
+localias_load
+nline=$(command -v rc1 rc2 rc3 | wc -l)
+echo -n "It should recursivly load aliases(2)="
+if [ "$nline" == "2" ]; then
+  echo -e $ok_s
+else
+  echo -e $ko_s
+fi
+cd ../../
+
+nline=$(localias | wc -l)
+echo -n "localias command should return aliases="
+if [ "$nline" == "2" ]; then
+  echo -e $ok_s
+else
+  echo -e $ko_s
+fi
+
+localias_clear
+nline=$(alias | wc -l)
+echo -n "It should clear recursive aliases="
+if [ $nline == "0" ]; then
+  echo -e $ok_s
+else
+  echo -e $ko_s
+fi
+
+
 alias toto=ls
+cd toto_ls
 localias_load 2> stderr.log
 nline=$(cat stderr.log | wc -l)
 echo -n "It should raise error when overriding existing alias="
