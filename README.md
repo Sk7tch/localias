@@ -34,10 +34,11 @@ zsh: command not found: toto
 ```
 
 # Options
-Options can be modified in ```localias.plugin.zsh```
-```LOCALIAS_RECURSIVE=1```
-When active .localias are loaded through each folder of the path. Default to 1.
-
-```LOCALIAS_ALIAS_OVERIDE=0```
-When active aliases defined in .localias can override existing aliases. Default to 0.
+Options can be modified in ```localias.plugin.zsh```  
+  
+```LOCALIAS_RECURSIVE=1```  
+When active .localias are loaded through each folder of the path. Default to 1.  
+  
+```LOCALIAS_ALIAS_OVERIDE=0```  
+When active aliases defined in .localias can override existing aliases. Default to 0.  
 
