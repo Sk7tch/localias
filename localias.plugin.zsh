@@ -1,5 +1,5 @@
 LOCALIAS_RECURSIVE=1
-LOCALIAS_ALIAS_OVERIDE=0
+LOCALIAS_ALIAS_OVERRIDE=0
 
 localias_clear()
 {
@@ -22,22 +22,24 @@ localias_load()
   tmp_file="/tmp/localias.tmp"
 
   if [ -f $localias ]; then
-    aliases=()
+    alias_tab=()
     while IFS='' read -r line || [ -n "$line" ]; do
         alias_name=$(echo "$line" | cut -d = -f 1)
         alias_command=$(echo "$line" | cut -d = -f 2-99)
         if [ "$alias_name" != "" -a "$alias_command" != "" ]; then
-           if [ $LOCALIAS_ALIAS_OVERIDE -eq 0 -a "$(command -v $alias_name)" ]; then
+           if [ $LOCALIAS_ALIAS_OVERRIDE ] && [ "$(command -v $alias_name)" ]; then
             (>&2 echo "$alias_name: is already an alias")
            else
-            aliases+=("$alias_name='$alias_command'")
+            alias_tab=(${alias_tab[@]} "$alias_name='$alias_command'")
            fi
         fi
     done < "$localias"
-    alias "${aliases[@]}"
-    echo "${aliases[@]}" | tr " " "\n" >> $tmp_file
+    if [ ! ${#alias_tab[@]} -eq 0 ]; then
+      alias "${alias_tab[@]}"
+      echo ${(j:\n:)alias_tab} >> $tmp_file
+    fi
   fi
-  if [ $LOCALIAS_RECURSIVE -eq 1 ]; then
+  if [ $LOCALIAS_RECURSIVE ]; then
     newdir=$(echo $cdir | rev | cut -d / -f 2-99 | rev)
     if [ $newdir ]; then
       localias_load $newdir
