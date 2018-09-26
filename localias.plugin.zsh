@@ -30,12 +30,12 @@ localias_load()
            if [ $LOCALIAS_ALIAS_OVERRIDE ] && [ "$(command -v $alias_name)" ]; then
             (>&2 echo "$alias_name: is already an alias")
            else
-            alias_tab=(${alias_tab[@]} "$alias_name='$alias_command'")
+            alias_tab=(${alias_tab[@]} "$alias_name=$alias_command")
            fi
         fi
     done < "$localias"
     if [ ! ${#alias_tab[@]} -eq 0 ]; then
-      alias "${alias_tab[@]}"
+      alias ${alias_tab[@]}
       echo ${(j:\n:)alias_tab} >> $tmp_file
     fi
   fi
